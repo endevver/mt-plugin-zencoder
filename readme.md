@@ -4,7 +4,7 @@
 
 The Zencoder service makes it easy to transcode video to create video in the optimum format for a given user. That is, one use may prefer to watch your video in HD, another is satisfied with SD-quality, and a mobile user can be served an optimized video, too. All of these options serve to minimize buffering and bandwidth use while providing the best quality video to a given user. The Zencoder plugin makes this process easy by providing a simple interface to create the profiles necessary for the different types of user, and -- with one click -- letting you submit a video to Zencoder, which then returns transcoded video ready to use.
 
-![Overview](plugins/Zencoder/static/documentation/overview.png)
+![Overview](https://github.com/endevver/mt-plugin-zencoder/blob/master/plugins/Zencoder/static/documentation/overview.png?raw=true)
 
 Transcoded files from Zencoder and converted into Assets within Movable Type, ready to be used just like any other asset.
 
