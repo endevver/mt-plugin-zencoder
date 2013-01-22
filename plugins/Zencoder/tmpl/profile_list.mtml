@@ -1,0 +1,115 @@
+<mt:SetVarBlock name="page_title">Zencoder Output Settings Profiles</mt:SetVarBlock>
+
+<mt:setvarblock name="html_body_footer">
+    <mt:include name="include/display_options.tmpl">
+</mt:setvarblock>
+
+<mt:setvarblock name="related_content">
+    <mtapp:PageActions />
+</mt:setvarblock>
+
+<mt:setvarblock name="html_head" append="1">
+    <script type="text/javascript">
+    var tableSelect;
+    function init()
+    {
+        // setup
+        tableSelect = new TC.TableSelect( "zencoder_profile-listing-table" );
+        tableSelect.rowSelect = true;
+    }
+
+    TC.attachLoadEvent( init );
+    </script>
+</mt:setvarblock>
+
+<mt:SetVarBlock name="content_header">
+    <div id="msg-container">
+    <mt:If name="api_key" eq="0">
+        <mtapp:StatusMsg
+            class="error">
+            <__trans phrase="The API key has not been configured.">
+        </mtapp:StatusMsg>
+    </mt:If>
+    <mt:If name="profile_deleted">
+        <mtapp:StatusMsg
+            class="success">
+            <__trans phrase="The selected Output Settings Profile has been deleted.">
+        </mtapp:StatusMsg>
+    </mt:If>
+    </div>
+
+    <p>
+        <a href="<mt:Var name="script_uri"><mt:Var name="script_uri">?__mode=zencoder.profile_edit&amp;blog_id=<mt:Var name="blog_id">"
+            class="icon-left icon-create">
+            Create an Output Settings Profile
+        </a>
+    </p>
+</mt:SetVarBlock>
+
+<mt:include name="include/header.tmpl">
+
+
+<mtapp:listing
+    type="zencoder_profile"
+    empty_message="No Zencoder Output Settings Profiles could be found.">
+    <mt:if name="__first__">
+    <thead>
+        <tr>
+            <th class="cb"><input type="checkbox" name="id-head" value="all" class="select" /></th>
+            <th class="status">
+                <img src="<mt:Var name="static_uri">images/status_icons/invert-flag.gif"
+                    alt="<__trans phrase="Status">"
+                    title="<__trans phrase="Status">"
+                    width="9" height="9" />
+            </th>
+            <th><__trans phrase="Label"></th>
+            <th><__trans phrase="Resolution"></th>
+            <th><__trans phrase="Format"></th>
+        </tr>
+    </thead>
+    <tbody>
+    </mt:if>
+        <tr class="<mt:if name="__odd__">odd<mt:else>even</mt:if>">
+            <td class="cb"
+                rowspan="2">
+                <input type="checkbox"
+                    name="id"
+                    value="<mt:var name="id">"
+                    class="select" />
+            </td>
+            <td class="status si<mt:if name="status" eq="1"> status-publish</mt:if><mt:if name="status" eq="2"> status-disabled</mt:if>"
+                rowspan="2">
+                <img src="<mt:Var name="static_uri">images/spacer.gif"
+                    <mt:if name="status" eq="1">title="<__trans phrase="Enabled">" alt="<__trans phrase="Enabled">"</mt:If>
+                    <mt:If name="status" eq="2">title="<__trans phrase="Disabled">" alt="<__trans phrase="Disabled">"</mt:If>
+                    width="9" height="9" />
+            </td>
+            <td>
+                <a
+                    href="<mt:Var name="script_uri">?__mode=zencoder.profile_edit&amp;blog_id=<mt:Var name="blog_id">&amp;id=<mt:Var name="id">"
+                    class="">
+                    <mt:Var name="label" escape="html">
+                </a>
+            </td>
+            <td>
+            <mt:If name="width">
+                <mt:Var name="width"> &times; <mt:Var name="height">
+            <mt:Else>
+                native
+            </mt:If>
+            </td>
+            <td>
+                <mt:Var name="format">
+            </td>
+        </tr>
+        <tr class="<mt:if name="__odd__">odd<mt:else>even</mt:if> slave">
+            <td colspan="3">
+                <mt:Var name="description" escape="html">
+            </td>
+        </tr>
+    <mt:if name="__last__">
+    </tbody>
+    </mt:if>
+</mtapp:listing>
+
+<mt:include name="include/footer.tmpl">

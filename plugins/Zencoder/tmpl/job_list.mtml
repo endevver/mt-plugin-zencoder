@@ -1,0 +1,110 @@
+<mt:SetVarBlock name="page_title">Zencoder Encoding Jobs</mt:SetVarBlock>
+
+<mt:setvarblock name="html_body_footer">
+    <mt:include name="include/display_options.tmpl">
+</mt:setvarblock>
+
+<mt:setvarblock name="related_content">
+    <mtapp:PageActions />
+</mt:setvarblock>
+
+<mt:setvarblock name="html_head" append="1">
+    <script type="text/javascript">
+    var tableSelect;
+    function init()
+    {
+        // setup
+        tableSelect = new TC.TableSelect( "zencoder_job-listing-table" );
+        tableSelect.rowSelect = true;
+    }
+
+    TC.attachLoadEvent( init );
+    </script> 
+</mt:setvarblock>
+
+<mt:SetVarBlock name="content_header">
+    <div id="msg-container">
+    <mt:If name="api_key" eq="0">
+        <mtapp:StatusMsg
+            class="error">
+            <__trans phrase="The API key has not been configured.">
+        </mtapp:StatusMsg>
+    </mt:If>
+    <mt:If name="job_deleted">
+        <mtapp:StatusMsg
+            class="success">
+            <__trans phrase="The selected job has been deleted.">
+        </mtapp:StatusMsg>
+    </mt:If>
+    </div>
+
+    <p style="margin-right: 120px;">
+        <__trans phrase="Below are the encoding jobs have been submitted to Zencoder for processing, but have not been completed yet. This listing provides a simple way to monitor that queue.">
+    </p>
+</mt:SetVarBlock>
+
+<mt:Include name="include/header.tmpl">
+
+<mtapp:listing
+    type="zencoder_job"
+    empty_message="No Zencoder Encoding Jobs could be found.">
+    <mt:if name="__first__">
+    <thead>
+        <tr>
+            <th class="cb"><input type="checkbox" name="id-head" value="all" class="select" /></th>
+            <th>Zencoder Job ID</th>
+            <th>Output Setting Profile Label</th>
+            <th>Zencoder Output ID</th>
+            <th>Parent Asset</th>
+            <th>Created On</th>
+        </tr>
+    </thead>
+    <tbody>
+    </mt:if>
+        <tr class="<mt:if name="__odd__">odd<mt:else>even</mt:if>">
+            <td class="cb"
+                <mt:If name="message">rowspan="2"</mt:If>>
+                <input type="checkbox"
+                    name="id"
+                    value="<mt:var name="id">"
+                    class="select" />
+            </td>
+            <td>
+                <mt:Var name="job_id">
+            </td>
+            <td>
+                <mt:Var name="profile_label" escape="html">
+            </td>
+            <td>
+                <mt:Var name="output_id">
+            </td>
+            <td>
+                <a
+                    href="<mt:Var name="script_uri">?__mode=view&amp;_type=asset&amp;blog_id=<mt:Var name="parent_asset_blog_id">&amp;id=<mt:Var name="parent_asset_id">"
+                    class="">
+                    <mt:Var name="parent_asset_label" escape="html">
+                </a>
+            </td>
+            <td>
+            <mt:If name="created_on_relative">
+                <mt:If name="dates_relative">
+                        <mt:Var name="created_on_relative">
+                <mt:Else>
+                        <mt:Var name="created_on_formatted">
+                </mt:If>
+            <mt:Else>
+                        <mt:Var name="created_on_formatted">
+            </mt:If>
+            </td>
+        </tr>
+        <mt:If name="message">
+        <tr class="<mt:if name="__odd__">odd<mt:else>even</mt:if> slave">
+            <td colspan="5"><mt:Var name="message" escape="html"></td>
+        </tr>
+        </mt:If>
+    <mt:if name="__last__">
+    </tbody>
+    </mt:if>
+</mtapp:listing>
+
+<mt:Include name="include/footer.tmpl">

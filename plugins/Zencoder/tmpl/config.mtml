@@ -1,0 +1,93 @@
+<mtapp:setting
+    id="api_key"
+    label="<__trans phrase="Zencoder API Key">"
+    hint="<__trans phrase="Specify your Zencoder API key.">"
+    show_hint="1">
+    <input type="text"
+        name="api_key"
+        id="api_key"
+        class="full full-width"
+        value="<mt:Var name="api_key" escape="html">" />
+</mtapp:setting>
+
+<mtapp:SettingGroup
+    id="connection">
+    <h3>FTP Connection Configuration</h3>
+    <p>Zencoder transfers the output files to a destination on this server with
+    FTP. This destination doesn&rsquo;t need to be web-accessible; files will be
+    copied to a web-accessible location when turned into assets.</p>
+
+    <mtapp:setting
+        id="ftp_server"
+        label="<__trans phrase="FTP Server">">
+        <input type="text"
+            name="ftp_server"
+            id="ftp_server"
+            class="full full-width"
+            value="<mt:Var name="ftp_server" escape="html">" />
+    </mtapp:setting>
+
+    <mtapp:setting
+        id="ftp_user"
+        label="<__trans phrase="FTP Username">">
+        <input type="text"
+            name="ftp_user"
+            id="ftp_user"
+            class="full full-width"
+            value="<mt:Var name="ftp_user" escape="html">" />
+    </mtapp:setting>
+
+    <mtapp:setting
+        id="ftp_pass"
+        label="<__trans phrase="FTP Password">">
+        <input type="password"
+            name="ftp_pass"
+            id="ftp_pass"
+            class="full full-width"
+            value="<mt:Var name="ftp_pass" escape="html">" />
+    </mtapp:setting>
+
+    <mtapp:setting
+        id="ftp_path"
+        label="<__trans phrase="FTP Destination Path">"
+        hint="<__trans phrase="Specify an FTP-accessible absolute path to the destination on this server where Zencoder should save its files. The FTP path to the destination may be different than the server root path.">"
+        show_hint="1">
+        <input type="text"
+            name="ftp_path"
+            id="ftp_path"
+            class="full full-width"
+            value="<mt:Var name="ftp_path" escape="html">" />
+    </mtapp:setting>
+
+    <mtapp:setting
+        id="server_path"
+        label="<__trans phrase="Server Destination Path">"
+        hint="<__trans phrase="Specify an absolute path to the destination on this server. The FTP path to the destination may be different than the server root path.">"
+        show_hint="1">
+        <input type="text"
+            name="server_path"
+            id="server_path"
+            class="full full-width"
+            value="<mt:Var name="server_path" escape="html">" />
+    </mtapp:setting>
+</mtapp:SettingGroup>
+
+<mtapp:SettingGroup
+    id="email_notifications">
+    <h3>Email Notification</h3>
+    <p>An email notification can be sent after successfully handling a Zencoder job.</p>
+
+    <mtapp:setting
+        id="email_author"
+        label="<__trans phrase="Email Author">"
+        hint="<__trans phrase="Email the author who submitted the parent asset to Zencoder to notify them of the newly created asset.">"
+        show_hint="1">
+        <input type="checkbox"
+            name="email_author"
+            id="email_author"
+            class=""
+            value="1"
+            <mt:If name="email_author">checked</mt:If> />
+    </mtapp:setting>
+</mtapp:SettingGroup>
+

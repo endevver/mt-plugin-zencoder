@@ -1,0 +1,597 @@
+<mt:SetVarBlock name="page_title">
+    <mt:If name="id">Edit<mt:Else>Create</mt:If> Output Settings Profile
+</mt:SetVarBlock>
+
+<mt:Var name="position_actions_bottom" value="1">
+<mt:SetVarTemplate name="action_buttons">
+        <button
+            type="submit"
+            accesskey="s"
+            class="primary-button primary action button"
+            title="<__trans phrase="Save (s)">">
+            <__trans phrase="Save">
+        </button>
+    <mt:If name="id">
+        <button
+            type="submit"
+            accesskey="x"
+            class="action button"
+            title="<__trans phrase="Delete (x)">">
+            <__trans phrase="Delete">
+        </button>
+    </mt:If>
+</mt:SetVarTemplate>
+
+<mt:SetVarBlock name="system_msg">
+    <div id="msg-block">
+        <mt:If name="api_key" eq="0">
+            <mtapp:StatusMsg
+                class="error">
+                <__trans phrase="The API key has not been configured.">
+            </mtapp:StatusMsg>
+        </mt:If>
+        <mt:if name="profile_saved">
+            <mtapp:statusmsg
+                class="success">
+                <__trans phrase="This output profile has been successfully saved.">
+            </mtapp:statusmsg>
+        </mt:if>
+    </div>
+</mt:SetVarBlock>
+
+<mt:SetVarBlock name="object_nav">
+    <ul class="object-nav" style="right: 20px;">
+        <li>
+        <mt:If tag="Version" like="/^5/">
+            <a href="<mt:Var name="script_url"$>?__mode=list&_type=zencoder_profile">
+        <mt:Else>
+            <a href="<mt:Var name="script_url"$>?__mode=zencoder.profile_list">
+        </mt:If>
+                Manage Zencoder Profiles
+            </a>
+            
+        </li>
+    </ul>
+</mt:SetVarBlock>
+
+<mt:SetVarBlock name="form_header">
+    <form method="post" action="<mt:Var name="script_url">" target="_top">
+        <input type="hidden" name="blog_id" value="<mt:Var name="blog_id">" />
+        <input type="hidden" name="__mode" value="zencoder.profile_save" />
+        <input type="hidden" name="id" value="<mt:Var name="id">" />
+</mt:SetVarBlock>
+
+<mt:Include name="include/header.tmpl">
+
+<mtapp:Setting
+    label="Label"
+    id="label"
+    required="1">
+    <input type="text"
+        name="label"
+        id="label"
+        class="full-width"
+        value="<mt:Var name="label" escape="html">" />
+</mtapp:Setting>
+
+<mtapp:Setting
+    label="Description"
+    id="description"
+    hint="Enter a description of this profile to explain its purpose; this is for your reference only."
+    show_hint="1">
+    <textarea
+        name="description"
+        id="description"
+        rows="3"
+        class="text low"><mt:Var name="description" escape="html"></textarea>
+</mtapp:Setting>
+
+<mtapp:Setting
+    label="Status"
+    id="status">
+    <select name="status" id="status">
+        <option value="1"
+            <mt:If name="status" eq="1">selected</mt:If>>Enabled</option>
+        <option value="2"
+            <mt:If name="status" eq="2">selected</mt:If>>Disabled</option>
+    </select>
+</mtapp:Setting>
+
+<mtapp:SettingGroup
+    id="format_group">
+    <h3>Format</h3>
+    <mtapp:Setting
+        label="Format"
+        id="format"
+        hint="The output container format to use."
+        show_hint="1">
+        <select name="format" id="format">
+        <option value="3g2"
+            <mt:If name="format" eq="3g2">selected</mt:If>>
+            3g2
+        </option>
+        <option value="3gp"
+            <mt:If name="format" eq="3gp">selected</mt:If>>
+            3gp
+        </option>
+        <option value="3gp2"
+            <mt:If name="format" eq="3gp2">selected</mt:If>>
+            3gp2
+        </option>
+        <option value="3gpp"
+            <mt:If name="format" eq="3gpp">selected</mt:If>>
+            3gpp
+        </option>
+        <option value="3gpp2"
+            <mt:If name="format" eq="3gpp2">selected</mt:If>>
+            3gpp2
+        </option>
+        <option value="aac"
+            <mt:If name="format" eq="aac">selected</mt:If>>
+            aac
+        </option>
+        <option value="ac3"
+            <mt:If name="format" eq="ac3">selected</mt:If>>
+            ac3
+        </option>
+        <option value="eac3"
+            <mt:If name="format" eq="eac3">selected</mt:If>>
+            eac3
+        </option>
+        <option value="ec3"
+            <mt:If name="format" eq="ec3">selected</mt:If>>
+            ec3
+        </option>
+        <option value="f4a"
+            <mt:If name="format" eq="f4a">selected</mt:If>>
+            f4a
+        </option>
+        <option value="f4b"
+            <mt:If name="format" eq="f4b">selected</mt:If>>
+            f4b
+        </option>
+        <option value="f4v"
+            <mt:If name="format" eq="f4v">selected</mt:If>>
+            f4v
+        </option>
+        <option value="flv"
+            <mt:If name="format" eq="flv">selected</mt:If>>
+            flv
+        </option>
+        <option value="highwinds"
+            <mt:If name="format" eq="highwinds">selected</mt:If>>
+            highwinds
+        </option>
+        <option value="m4a"
+            <mt:If name="format" eq="m4a">selected</mt:If>>
+            m4a
+        </option>
+        <option value="m4b"
+            <mt:If name="format" eq="m4b">selected</mt:If>>
+            m4b
+        </option>
+        <option value="m4r"
+            <mt:If name="format" eq="m4r">selected</mt:If>>
+            m4r
+        </option>
+        <option value="m4v"
+            <mt:If name="format" eq="m4v">selected</mt:If>>
+            m4v
+        </option>
+        <option value="mkv"
+            <mt:If name="format" eq="mkv">selected</mt:If>>
+            mkv
+        </option>
+        <option value="mov"
+            <mt:If name="format" eq="mov">selected</mt:If>>
+            mov
+        </option>
+        <option value="mp3"
+            <mt:If name="format" eq="mp3">selected</mt:If>>
+            mp3
+        </option>
+        <option value="mp4"
+            <mt:If name="format" eq="mp4">selected</mt:If>>
+            mp4
+        </option>
+        <option value="oga"
+            <mt:If name="format" eq="oga">selected</mt:If>>
+            oga
+        </option>
+        <option value="ogg"
+            <mt:If name="format" eq="ogg">selected</mt:If>>
+            ogg
+        </option>
+        <option value="ogv"
+            <mt:If name="format" eq="ogv">selected</mt:If>>
+            ogv
+        </option>
+        <option value="ogx"
+            <mt:If name="format" eq="ogx">selected</mt:If>>
+            ogx
+        </option>
+        <option value="ts"
+            <mt:If name="format" eq="ts">selected</mt:If>>
+            ts
+        </option>
+        <option value="webm"
+            <mt:If name="format" eq="webm">selected</mt:If>>
+            webm
+        </option>
+        <option value="wma"
+            <mt:If name="format" eq="wma">selected</mt:If>>
+            wma
+        </option>
+        <option value="wmv"
+            <mt:If name="format" eq="wmv">selected</mt:If>>
+            wmv
+        </option>
+        </select>
+    </mtapp:Setting>
+</mtapp:SettingGroup>
+
+<mtapp:SettingGroup
+    id="resolution_group">
+    <h3>Resolution</h3>
+    <mtapp:Setting
+        label="Resolution"
+        id="resolution"
+        hint="The maximum width and height of the output video (in pixels). Leave these fields blank to use the input resolution."
+        show_hint="1">
+        <label for="width">Width</label>
+        <input type="text"
+            name="width"
+            id="width"
+            class=""
+            style="width: 50px;"
+            value="<mt:Var name="width" escape="html">" />
+        <label for="height" style="margin-left: 25px;">Height</label>
+        <input type="text"
+            name="height"
+            id="height"
+            class=""
+            style="width: 50px;"
+            value="<mt:Var name="height" escape="html">" />
+    </mtapp:Setting>
+</mtapp:SettingGroup>
+
+<mtapp:SettingGroup
+    id="frame_rate_group">
+    <h3>Frame Rate</h3>
+
+    <mtapp:Setting
+        label="Maximum Frame Rate"
+        id="max_frame_rate"
+        hint="Limits the output frame rate to a certain number. If the frame rate would otherwise exceed this number (e.g. the input frame rate is too high), this will reduce the frame rate to this setting."
+        show_hint="1">
+        <input type="text"
+            name="max_frame_rate"
+            id="max_frame_rate"
+            class=""
+            value="<mt:Var name="max_frame_rate" escape="html" _default="30">" />
+    </mtapp:Setting>
+</mtapp:SettingGroup>
+
+<mtapp:SettingGroup
+    id="rate_control_group">
+    <h3>Rate Control</h3>
+
+    <mtapp:Setting
+        label="Video Quality"
+        id="quality"
+        hint="This setting automatically chooses a video bitrate that produces a video of the desired quality. This is useful, because one video may need a higher bitrate than another to achieve a target visual quality, due to the complexity of the content, the resolution, etc."
+        show_hint="1">
+        <select name="quality" id="quality">
+            <option value="1"
+                <mt:If name="quality" eq="1">selected</mt:If>>
+                Quality 1: Highly compressed. Mediocre visual quality, but small files.
+            </option>
+            <option value="2"
+                <mt:If name="quality" eq="2">selected</mt:If>>
+                Quality 2: Acceptable quality.
+            </option>
+            <option value="3"
+                <mt:If name="quality" eq="3">selected</mt:If>>
+                Quality 3: Good quality. Better than most web video.
+            </option>
+            <option value="4"
+                <mt:If name="quality" eq="4">selected</mt:If>>
+                Quality 4: Great quality. Looks excellent.
+            </option>
+            <option value="5"
+                <mt:If name="quality" eq="5">selected</mt:If>>
+                Quality 5: Nearly lossless. Large files. Not recommended unless you plan to encode this output again.
+            </option>
+        </select>
+    </mtapp:Setting>
+
+    <mtapp:Setting
+        label="Audio Bitrate"
+        id="audio_bitrate"
+        hint="An output bitrate setting, in Kbps. With 2 channel output, this is the total audio bitrate, not the bitrate of each channel, so 128kbps stereo output is encoded at 64kbps per channel. Below 48kbps per channel, quality can start to suffer. Leave this field blank to use the input bitrate."
+        show_hint="1">
+        <input type="text"
+            name="audio_bitrate"
+            id="audio_bitrate"
+            class=""
+            value="<mt:Var name="audio_bitrate" escape="html">" />
+    </mtapp:Setting>
+</mtapp:SettingGroup>
+
+<mtapp:SettingGroup
+    id="h264-group">
+    <h3>H.264</h3>
+
+    <mtapp:Setting
+        label="H.264 Profile"
+        id="h264_profile"
+        hint="<p>H.264 has three commonly-used profiles: Baseline (lowest), Main, and High. Lower levels are easier to decode, but higher levels offer better compression. For example, the iPhone 3GS only supports the Baseline profile, which we use by default. The Main and High profiles are a definite step up in compression, and work fine for web playback, though be careful with HD High profile video in Flash Player, which doesn’t offer the best H.264 decoder.</p><p>For the best compression quality, choose High. For playback on low-CPU machines or many mobile devices, choose Baseline.</p>"
+        show_hint="1">
+        <select name="h264_profile" id="h264_profile">
+            <option value="baseline"
+                <mt:If name="h264_profile" eq="baseline">selected</mt:If>>
+                Baseline
+            </option>
+            <option value="main"
+                <mt:If name="h264_profile" eq="main">selected</mt:If>>
+                Main
+            </option>
+            <option value="high"
+                <mt:If name="h264_profile" eq="high">selected</mt:If>>
+                High
+            </option>
+        </select>
+    </mtapp:Setting>
+
+    <mtapp:Setting
+        label="H.264 Level"
+        id="h264_level"
+        hint="By default, this value is automatically calculated using the <a href=\"http://en.wikipedia.org/wiki/H.264#Levels\">H.264 level chart</a> based on the output video. Primarily used for device compatibility. For example, the iPhone supports H.264 Level 3, which means that a video’s decoder_bitrate_cap can’t exceed 10,000kbps. Typically, you should only change this setting if you’re targeting a specific device that requires it."
+        show_hint="1">
+        <select name="h264_level" id="h264_level">
+            <option value="0"
+                <mt:If name="h264_level" eq="0">selected</mt:If>>
+                Default
+            </option>
+            <option value="1"
+                <mt:If name="h264_level" eq="1">selected</mt:If>>
+                1
+            </option>
+            <option value="1b"
+                <mt:If name="h264_level" eq="1b">selected</mt:If>>
+                1b
+            </option>
+            <option value="1.1"
+                <mt:If name="h264_level" eq="1.1">selected</mt:If>>
+                1.1
+            </option>
+            <option value="1.2"
+                <mt:If name="h264_level" eq="1.2">selected</mt:If>>
+                1.2
+            </option>
+            <option value="1.3"
+                <mt:If name="h264_level" eq="1.3">selected</mt:If>>
+                1.3
+            </option>
+            <option value="2"
+                <mt:If name="h264_level" eq="2">selected</mt:If>>
+                2
+            </option>
+            <option value="2.1"
+                <mt:If name="h264_level" eq="2.1">selected</mt:If>>
+                2.1
+            </option>
+            <option value="2.2"
+                <mt:If name="h264_level" eq="2.2">selected</mt:If>>
+                2.2
+            </option>
+            <option value="3"
+                <mt:If name="h264_level" eq="3">selected</mt:If>>
+                3
+            </option>
+            <option value="3.1"
+                <mt:If name="h264_level" eq="3.1">selected</mt:If>>
+                3.1
+            </option>
+            <option value="3.2"
+                <mt:If name="h264_level" eq="3.2">selected</mt:If>>
+                3.2
+            </option>
+            <option value="4"
+                <mt:If name="h264_level" eq="4">selected</mt:If>>
+                4
+            </option>
+            <option value="4.1"
+                <mt:If name="h264_level" eq="4.1">selected</mt:If>>
+                4.1
+            </option>
+            <option value="4.2"
+                <mt:If name="h264_level" eq="4.2">selected</mt:If>>
+                4.2
+            </option>
+            <option value="5"
+                <mt:If name="h264_level" eq="5">selected</mt:If>>
+                5
+            </option>
+            <option value="5.1"
+                <mt:If name="h264_level" eq="5.1">selected</mt:If>>
+                5.1
+            </option>
+            <option value="5.2"
+                <mt:If name="h264_level" eq="5.2">selected</mt:If>>
+                5.2
+            </option>
+        </select>
+    </mtapp:Setting>
+</mtapp:SettingGroup>
+
+<mtapp:SettingGroup
+    id="audio_group">
+    <h3>Audio</h3>
+
+    <mtapp:Setting
+        label="Audio Sample Rate"
+        id="audio_sample_rate"
+        hint="<p>Only use this setting if you have a good reason to do so; &ldquo;Default&rdquo; is likely the correct choice. By default, the input sample rate will be used (i.e. the audio will not be resampled), though sample rates higher than 96000 will be reduced to a max of 96000.</p><p>Forcing an output sample rate can cause unexpected problems &mdash; for example, each audio codec only supports a limited range of sample rates, and each sample rate is only compatible with a limited range of bitrates. You can't encode 48Khz AAC at 16kbps, or 8000hz MP3 at 320kbps, for example. If an Audio Sample Rate is specified, a compatible Audio Bitrate must also be specified.</p>"
+        show_hint="1">
+        <select name="audio_sample_rate" id="audio_sample_rate">
+            <option value="0"
+                <mt:If name="audio_sample_rate" eq="0">selected</mt:If>>
+                Default
+            </option>
+            <option value="8000"
+                <mt:If name="audio_sample_rate" eq="8000">selected</mt:If>>
+                8000 Hz
+            </option>
+            <option value="11025"
+                <mt:If name="audio_sample_rate" eq="11025">selected</mt:If>>
+                11025 Hz
+            </option>
+            <option value="12000"
+                <mt:If name="audio_sample_rate" eq="12000">selected</mt:If>>
+                12000 Hz
+            </option>
+            <option value="16000"
+                <mt:If name="audio_sample_rate" eq="16000">selected</mt:If>>
+                16000 Hz
+            </option>
+            <option value="22050"
+                <mt:If name="audio_sample_rate" eq="22050">selected</mt:If>>
+                22050 Hz
+            </option>
+            <option value="32000"
+                <mt:If name="audio_sample_rate" eq="32000">selected</mt:If>>
+                32000 Hz
+            </option>
+            <option value="44100"
+                <mt:If name="audio_sample_rate" eq="44100">selected</mt:If>>
+                44100 Hz
+            </option>
+            <option value="48000"
+                <mt:If name="audio_sample_rate" eq="48000">selected</mt:If>>
+                48000 Hz
+            </option>
+            <option value="96000"
+                <mt:If name="audio_sample_rate" eq="96000">selected</mt:If>>
+                96000 Hz
+            </option>
+        </select>
+    </mtapp:Setting>
+</mtapp:SettingGroup>
+
+<mtapp:SettingGroup
+    id="thumbnails_group">
+    <h3>Thumbnails</h3>
+    <p>Thumbnails can be created based on a variety of rules. Each of the below
+    options is a different way to create thumbnails; none, any, or all of them
+    can be used. The thumbnail dimensions match this profile&rsquo;s Resolution
+    values. Thumbbnails will be turned into assets associated with the output
+    created by this video profile.</p>
+
+    <mtapp:Setting
+        label="Number of Thumbnails"
+        id="thumb_number"
+        hint="The number of thumbnails to capture, evenly-spaced across the whole duration of the file. So if you ask for 1 thumbnail, it will be near the middle of the file. Specifying 3 thumbnails on a 8 minute video will result in thumbnails at approximately 2, 4, and 6 minutes."
+        show_hint="1">
+        <select name="thumb_number" id="thumb_number">
+            <option value="0"
+                <mt:If name="thumb_number" eq="0">selected</mt:If>>
+                No thumbnails
+            </option>
+            <option value="1"
+                <mt:If name="thumb_number" eq="1">selected</mt:If>>
+                1
+            </option>
+            <option value="2"
+                <mt:If name="thumb_number" eq="2">selected</mt:If>>
+                2
+            </option>
+            <option value="3"
+                <mt:If name="thumb_number" eq="3">selected</mt:If>>
+                3
+            </option>
+            <option value="4"
+                <mt:If name="thumb_number" eq="4">selected</mt:If>>
+                4
+            </option>
+            <option value="5"
+                <mt:If name="thumb_number" eq="5">selected</mt:If>>
+                5
+            </option>
+            <option value="6"
+                <mt:If name="thumb_number" eq="6">selected</mt:If>>
+                6
+            </option>
+            <option value="7"
+                <mt:If name="thumb_number" eq="7">selected</mt:If>>
+                7
+            </option>
+            <option value="8"
+                <mt:If name="thumb_number" eq="8">selected</mt:If>>
+                8
+            </option>
+            <option value="9"
+                <mt:If name="thumb_number" eq="9">selected</mt:If>>
+                9
+            </option>
+            <option value="10"
+                <mt:If name="thumb_number" eq="10">selected</mt:If>>
+                10
+            </option>
+        </select>
+    </mtapp:Setting>
+
+    <mtapp:Setting
+        label="Time Interval"
+        id="thumb_interval"
+        hint="Take thumbnails at an even interval, in seconds. Zencoder will return one thumbnail for every N seconds of the file. So if you choose an interval of 60, and your input file is 12 minutes long, you’ll get back 12 thumbnails, each one on the minute."
+        show_hint="1">
+        <select name="thumb_interval" id="thumb_interval">
+            <option value="0"
+                <mt:If name="thumb_interval" eq="0">selected</mt:If>>
+                No thumbnails
+            </option>
+            <option value="15"
+                <mt:If name="thumb_interval" eq="15">selected</mt:If>>
+                15 seconds
+            </option>
+            <option value="30"
+                <mt:If name="thumb_interval" eq="30">selected</mt:If>>
+                30 seconds
+            </option>
+            <option value="60"
+                <mt:If name="thumb_interval" eq="60">selected</mt:If>>
+                60 seconds (one minute)
+            </option>
+            <option value="120"
+                <mt:If name="thumb_interval" eq="120">selected</mt:If>>
+                120 seconds (two minutes)
+            </option>
+            <option value="300"
+                <mt:If name="thumb_interval" eq="300">selected</mt:If>>
+                300 seconds (five minutes)
+            </option>
+        </select>
+    </mtapp:Setting>
+
+    <mtapp:Setting
+        label="Arbitrary Times"
+        id="thumb_times"
+        hint="A list of times, in seconds, at which to grab a thumbnail. Decimals are valid. So setting times to &ldquo;12.5, 25&rdquo; would grab two thumbnails, one at 12.5 seconds, and one at 25 seconds. This value must be a comma-separated list of numbers. Leave this field empty to create no thumbnails based on Arbitrary Times."
+        show_hint="1">
+        <input type="text"
+            name="thumb_times"
+            id="thumb_times"
+            class="full-width"
+            value="<mt:Var name="thumb_times" escape="html">" />
+    </mtapp:Setting>
+</mtapp:SettingGroup>
+
+
+<mt:Include name="include/actions_bar.tmpl" bar_position="bottom" hide_pager="1">
+
+<mt:SetVarBlock name="form_footer">
+    </form>
+</mt:SetVarBlock>
+
+<mt:Include name="include/footer.tmpl">

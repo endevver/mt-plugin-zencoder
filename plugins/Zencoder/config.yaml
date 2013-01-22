@@ -1,0 +1,144 @@
+name: Zencoder
+id: Zencoder
+key: Zencoder
+description: 'An interface to the <a href="https://zencoder.com/">Zencoder</a> service from Brightcove.'
+version: 1.0.0
+author_name: 'Endevver'
+author_link: http://endevver.com
+plugin_link: 
+schema_version: 2
+
+settings:
+    api_key:
+        scope: system
+    ftp_server:
+        scope: system
+    ftp_user:
+        scope: system
+    ftp_pass:
+        scope: system
+    ftp_path:
+        scope: system
+    server_path:
+        scope: system
+    email_author:
+        scope: system
+        default: 1
+
+system_config_template: config.mtml
+
+init_app: $Zencoder::Zencoder::CMS::init_app
+
+applications:
+    cms:
+        menus:
+            # MT5, in the Settings menu
+            settings:zencoder_profiles:
+                label:      'Zencoder Profiles'
+                mode:       list
+                args:
+                    _type: zencoder_profile
+                order:      5000
+                view:       'system'
+                permission: 'administer'
+            settings:zencoder_jobs:
+                label:      'Zencoder Jobs'
+                mode:       list
+                args:
+                    _type: zencoder_job
+                order:      5001
+                view:       'system'
+                permission: 'administer'
+            # MT4, in the Preferences menu
+            prefs:zencoder_profiles:
+                label:      'Zencoder Profiles'
+                mode:       zencoder.profile_list
+                order:      5000
+                view:       'system'
+                permission: 'administer'
+            prefs:zencoder_jobs:
+                label:      'Zencoder Jobs'
+                mode:       zencoder.job_list
+                order:      5001
+                view:       'system'
+                permission: 'administer'
+        methods:
+            zencoder.job_list:               Zencoder::CMS::job_list
+            zencoder.job_itemset_delete:     Zencoder::CMS::job_itemset_delete
+            zencoder.profile_list:           Zencoder::CMS::profile_list
+            zencoder.profile_edit:           Zencoder::CMS::profile_edit
+            zencoder.profile_save:           Zencoder::CMS::profile_save
+            zencoder.profile_delete:         Zencoder::CMS::profile_delete
+            zencoder.profile_itemset_delete: Zencoder::CMS::profile_itemset_delete
+
+listing_screens:
+    zencoder_profile:
+        primary: label
+        default_sort_key: label
+    zencoder_job:
+        primary: job_id
+        default_sort_key: created_on
+
+list_properties:
+    zencoder_profile: $Zencoder::Zencoder::Profile::list_properties
+    zencoder_job:     $Zencoder::Zencoder::Job::list_properties
+
+content_actions:
+    zencoder_profile:
+        create:
+            label: 'Create an Output Settings Profile'
+            order: 100
+            mode: zencoder.profile_edit
+            class: 'icon-create'
+
+page_actions:
+    asset:
+        submit_to_zencoder:
+            label: 'Submit to Zencoder'
+            order: 100
+            code: Zencoder::CMS::page_action
+            # Use the condition to target only asset.video
+            condition: Zencoder::CMS::page_action_condition
+
+list_actions:
+    asset:
+        submit_to_zencoder:
+            label: 'Submit to Zencoder'
+            order: 100
+            code: Zencoder::CMS::page_action
+    zencoder_profile:
+        delete:
+            label: 'Delete'
+            order: 200
+            code: Zencoder::CMS::profile_itemset_delete
+            continue_prompt: 'Are you sure you want to delete the selected profile(s)?'
+            button: 1
+    zencoder_job:
+        delete:
+            label: 'Delete'
+            order: 200
+            code: Zencoder::CMS::job_itemset_delete
+            continue_prompt: 'Are you sure you want to delete the selected job(s)? Note that deleting jobs only deletes reference to them, which is used to track assets. To actually cancel the job go to Zencoder.'
+            button: 1
+
+object_types:
+    zencoder_profile: Zencoder::Profile
+    zencoder_job:     Zencoder::Job
+    # Output is returned from Zencoder with a bunch of relevant metadata. Might
+    # as well save it!
+    asset.video:
+        height:                integer meta
+        width:                 integer meta
+        audio_bitrate_in_kbps: string meta
+        audio_codec:           string meta
+        audio_sample_rate:     integer meta
+        channels:              integer meta
+        duration_in_ms:        string meta
+        format:                string meta
+        frame_rate:            string meta
+        video_bitrate_in_kbps: string meta
+        video_codec:           string meta
+
+callbacks:
+    MT::App::CMS::template_source.edit_asset: Zencoder::CMS::edit_asset_msg
+
