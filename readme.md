@@ -34,6 +34,8 @@ Note that there are two path fields: FTP Destination Path and Server Destination
 
 After Zencoder has completed processing a job and Movable Type has turned the new files from Zencoder into Assets, there is an opportunity to notify the user who submitted the files to be notified that they are complete: simply check the Notify Author checkbox.
 
+Video files can be automatically submitted to Zencoder when they are uploaded. Enable this feature by clicking the Automatically Submit checkbox.
+
 ## Output Setting Profiles
 
 Zencoder's encoding options can be configured to create an Output Setting Profile. Multiple Output Setting Profiles can be used to encode to a variety of outputs -- for example, set up two outputs to create both "HD" and "mobile" formatted output.
@@ -58,6 +60,10 @@ After uploading a video, submit it to Zencoder for transcoding to the enabled Ou
 If an asset has been successfully submitted to Zencoder you'll see a message indicating that the asset has been sent. Note that this indicates *only* that Zencoder has accepted your submission. Refer to the Zencoder control panel to see whether a job succeeds or fails, and why.
 
 After Zencoder successfully transcodes your files and MT turns them into assets they are ready to use. Zencoder-built assets have a parent-child relationship and customized labels to make them easy to recognize. The asset first submitted to Zencoder is the parent, while any transcoded files are children (on the Edit Asset screen you'll see this in the Related Assets section). Similarly, any thumbnail images extracted are children to the transcoded video they were built from (again visible based on the Related Assets section on the Edit Asset screen). Labels for Zencoder-transcoded assets are made by assembling the parent asset's label with the Output Setting Profile used; examples: "Test video [HTML5, WebM (native resolution)]" and "Test video [HTML5, WebM (native resolution)] Thumbnail" for video and thumbnail assets.
+
+## Upload a Video
+
+You can easily bypass the above step and having your video automatically submitted to Zencoder by simply uploading a video (though be sure the Automatically Submit checkbox found in the Plugin Settings is enabled).
 
 ## Monitor Zencoder Encoding  Jobs
 

@@ -537,6 +537,30 @@ END_TMPL
     }
 }
 
+# After uploading a file, the file should be automatically sent to Zencoder for
+# processing (if this feature has been enabled in Settings).
+sub upload_file_callback {
+    my $cb = shift;
+
+    my $params = {};
+    while (@_) {
+        my $key   = shift;
+        my $value = shift;
+        $params->{$key} = $value;
+    }
+
+    my $plugin = $cb->plugin;
+    my $asset  = $params->{asset};
+
+    # If automatic submit is not enabled, quit.
+    return if !$plugin->get_config_value('automatic_submit');
+
+    # If this is not a video asset, quit.
+    return if $asset->class ne 'video';
+
+    _submit_to_zencoder($asset);
+}
+
 1;
 
 __END__

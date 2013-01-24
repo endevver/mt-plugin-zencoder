@@ -91,3 +91,21 @@
     </mtapp:setting>
 </mtapp:SettingGroup>
 
+<mtapp:SettingGroup
+    id="automatically_sent_to_zencoder">
+    <h3>Automatically Send Uploads to Zencoder</h3>
+
+    <mtapp:setting
+        id="email_author"
+        label="<__trans phrase="Automatically Submit">"
+        hint="<__trans phrase="After uploading a new video, automatically submit it to Zencoder for processing.">"
+        show_hint="1">
+        <input type="checkbox"
+            name="automatic_submit"
+            id="automatic_submit"
+            class=""
+            value="1"
+            <mt:If name="automatic_submit">checked</mt:If> />
+    </mtapp:setting>
+</mtapp:SettingGroup>
+
