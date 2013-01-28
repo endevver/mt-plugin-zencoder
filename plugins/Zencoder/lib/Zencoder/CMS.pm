@@ -571,6 +571,86 @@ sub upload_file_callback {
     _submit_to_zencoder($asset);
 }
 
+# If an asset has submitted a job to Zencoder, and that asset is used on the
+# an Entry/Page, then we want to be sure the Zencoder job completes before
+# trying to use the asset (or, more correctly, before the templates try to use
+# a transcoded child asset of the selected parent).
+sub pre_save_callback {
+    my ($cb, $app, $obj, $original) = @_;
+    my $q = $app->can('query') ? $app->query : $app->param;
+
+    # Look at the `include_asset_ids` hidden form field to see what assets are
+    # used in this Entry/Page. (We can't check the objectasset table because
+    # the object hasn't been saved yet.)
+    my @asset_ids = split(',', $q->param('include_asset_ids'));
+    foreach my $asset_id (@asset_ids) {
+        # Check if this asset ID is in the zencoder_job table. If it is, that
+        # means the asset is with Zencoder right now and we don't want to try
+        # publishing the Entry/Page because if the template tries to use the
+        # child assets (which don't exist yet) it won't publish correctly.
+        if (
+            MT->model('zencoder_job')->exist({
+                parent_asset_id => $asset_id,
+            })
+        ) {
+            # This asset is being processed by Zencoder. Delay publishing this
+            # Entry/Page by scheduling for just a few minutes in the future.
+            if ( $obj->status == MT->model('entry')->RELEASE() ) {
+                my $ts = $obj->authored_on;
+                my $epoch = MT::Util::ts2epoch(undef, $ts);
+                # Epoch is measured in seconds, so add five minutes to this
+                # value to publish in the future.
+                $epoch += 60 * 5;
+                $ts = MT::Util::epoch2ts(undef, $epoch);
+
+                # Advance the publish time, and reset it to be a scheduled
+                # Entry/Page. When RPT tries to republish, it will check if the
+                # transcoded files are ready and publish.
+                $obj->authored_on($ts);
+                $obj->status( MT->model('entry')->FUTURE() );
+            }
+        }
+    }
+
+    return 1;
+}
+
+# When the Entry/Page is loaded, check if any of the associated assets are
+# being processed by Zencoder. If they are, display a message to that effect.
+sub edit_entry_msg {
+    my ( $cb, $app, $param, $tmpl ) = @_;
+
+    # Grab the assets used on this Entry/Page and find their IDs, which we then
+    # use to look in the Zencoder Job table, below.
+    my $asset_loop = $param->{asset_loop};
+    my @asset_ids;
+    foreach my $asset (@$asset_loop) {
+        # If this asset is in the Zencoder Job table, then note that it's being
+        # processed.
+        if (
+            MT->model('zencoder_job')->exist({
+                parent_asset_id => $asset->{asset_id},
+            })
+        ) {
+            # This will add a message about each asset that's with Zencoder.
+            # Perhaps overkill notification, but at least it'll be clear.
+            my $asset_name = $asset->{asset_name};
+            my $msg = <<END_TMPL;
+        <mtapp:statusmsg
+            id="zencoder-status"
+            class="info">
+            <__trans phrase="The asset [_1] is currently being processed by Zencoder. When transcoding is complete and the new child assets are ready this [_2] can be published." params="$asset_name%%<mt:Var name="object_type">">
+        </mtapp:statusmsg>
+END_TMPL
+
+            # Finally, insert the message on the Edit screen.
+            my $text = $tmpl->text;
+            $text =~ s{(<mt:unless name="recovered_object">)}{$msg$1}msg;
+            $tmpl->text( $text );
+        }
+    }
+}
+
 1;
 
 __END__

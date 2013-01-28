@@ -145,4 +145,7 @@ callbacks:
     MT::App::CMS::template_source.edit_asset: Zencoder::CMS::edit_asset_msg
     MT::App::CMS::cms_upload_file:            Zencoder::CMS::upload_file_callback
     MT::App::CMS::api_upload_file:            Zencoder::CMS::upload_file_callback
+    MT::App::CMS::template_param.edit_entry:  Zencoder::CMS::edit_entry_msg
+    MT::App::CMS::cms_pre_save.entry:         Zencoder::CMS::pre_save_callback
+    MT::App::CMS::api_pre_save.entry:         Zencoder::CMS::pre_save_callback
 
