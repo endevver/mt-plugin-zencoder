@@ -6,7 +6,7 @@ version: 1.0.0
 author_name: 'Endevver'
 author_link: http://endevver.com
 plugin_link: 
-schema_version: 2
+schema_version: 3
 
 settings:
     api_key:

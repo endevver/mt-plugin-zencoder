@@ -270,6 +270,18 @@
             class=""
             value="<mt:Var name="max_frame_rate" escape="html" _default="30">" />
     </mtapp:Setting>
+
+    <mtapp:Setting
+        label="Keyframe Interval"
+        id="keyframe_interval"
+        hint="Set the maximum number of frames between each keyframe. By default, a keyframe will be created at least every 250 frames. Specifying a different keyframe interval will allow you to create more or less keyframes in your video. Keyframe interval should be specified as a positive integer. For example, a value of 100 will create a keyframe every 100 frames. A greater number of keyframes will increase the size of your output file, but will allow for more precise scrubbing in most players."
+        show_hint="1">
+        <input type="text"
+            name="keyframe_interval"
+            id="keyframe_interval"
+            class=""
+            value="<mt:Var name="keyframe_interval" escape="html" _default="250">" />
+    </mtapp:Setting>
 </mtapp:SettingGroup>
 
 <mtapp:SettingGroup
@@ -423,6 +435,19 @@
             </option>
         </select>
     </mtapp:Setting>
+
+    <mtapp:Setting
+        label="Forced Keyframe Rate"
+        id="h264_keyframe_rate"
+        hint="Set the forced keyframe interval by specifying number of keyframes per second, taking frame rate into account. This option only applies when using the H.264 video codec. A greater number of keyframes will increase the size of your output file, but will allow for more precise scrubbing in most players. Leave this field empty to fall back to the keyframe interval."
+        show_hint="1">
+        <input type="text"
+            id="h264_keyframe_rate"
+            name="h264_keyframe_rate"
+            class="full-width full"
+            value="<mt:Var name="h264_keyframe_rate" escape="html">">
+    </mtapp:Setting>
+
 </mtapp:SettingGroup>
 
 <mtapp:SettingGroup

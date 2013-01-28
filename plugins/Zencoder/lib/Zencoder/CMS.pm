@@ -108,8 +108,9 @@ sub profile_edit {
         # make them easy to expand in the future.
         my @keys = qw(
             id label description blog_id status format width height
-            max_frame_rate quality h264_profile h264_level audio_bitrate
-            audio_sample_rate thumb_number thumb_interval thumb_times
+            max_frame_rate keyframe_interval quality h264_profile h264_level
+            h264_keyframe_rate audio_bitrate audio_sample_rate thumb_number
+            thumb_interval thumb_times
         );
 
         foreach my $key ( @keys ) {
@@ -150,9 +151,9 @@ sub profile_save {
     # Set the Zencoder-specified fields by just using a prototype. This will
     # make them easy to expand in the future.
     my @keys = qw(
-        format width height status max_frame_rate quality h264_profile
-        h264_level audio_bitrate audio_sample_rate thumb_number thumb_interval
-        thumb_times
+        format width height status max_frame_rate keyframe_interval quality
+        h264_profile h264_level h264_keyframe_rate audio_bitrate
+        audio_sample_rate thumb_number thumb_interval thumb_times
     );
 
     foreach my $key ( @keys ) {
@@ -378,8 +379,9 @@ sub _submit_to_zencoder {
         # Set the output fields from the profile by just using a prototype.
         # This will make them easy to expand in the future.
         my @keys = qw(
-            label format width height max_frame_rate quality h264_profile
-            h264_level audio_bitrate audio_sample_rate
+            label format width height max_frame_rate keyframe_interval quality
+            h264_profile h264_level h264_keyframe_rate audio_bitrate
+            audio_sample_rate
         );
 
         foreach my $key ( @keys ) {
