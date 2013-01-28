@@ -513,6 +513,14 @@ sub _submit_to_zencoder {
         $job->save or die $job->errstr;
     }
 
+    # Submission to Zencoder was successful.
+    MT->log({
+        level   => MT->model('log')->INFO(),
+        class   => 'zencoder',
+        blog_id => $blog->id,
+        message => 'Zencoder submitted the asset "' . $asset->label . '" (ID '
+            . $asset->id . ') for transcoding.',
+    });
 }
 
 # On the Edit Asset screen, we want to note when an asset has been sent to
