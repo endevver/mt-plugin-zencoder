@@ -24,7 +24,7 @@ sub init_app {
         })
     ) {
         my $text = <<EMAIL;
-Zencoder has finished processing the asset "<mt:AssetLabel>" in the blog <mt:BlogName>. Child assets have been created created and are ready to use wherever you like!
+Zencoder has finished processing the asset "<mt:AssetLabel>" in the blog <mt:BlogName>. Child assets have been created and are ready to use wherever you like!
 
 View the parent asset and all of the child assets:
     <mt:CGIPath><mt:AdminScript>?__mode=view&_type=asset&blog_id=<mt:BlogID>&id=<mt:AssetID>
