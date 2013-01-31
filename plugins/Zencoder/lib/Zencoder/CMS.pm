@@ -146,7 +146,7 @@ sub profile_save {
     }
 
     # The default non-Zencoder fields.
-    $profile->label( $q->param('label') );
+    $profile->label( $q->param('label') || 'Output Settings Profile' );
     $profile->description( $q->param('description') );
     $profile->status( $q->param('status') );
     $profile->blog_id( $q->param('blog_id') );
