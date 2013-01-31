@@ -2,11 +2,15 @@
 
 [Zencoder](http://zencoder.com) is a cloud-based audio and video encoding service from [Brightcove](http://brightcove.com). The Zencoder plugin for Movable Type integrates the Zencoder service with assets and the asset manager. A Zencoder account is required.
 
-The Zencoder service makes it easy to transcode video to create video in the optimum format for a given user. That is, one use may prefer to watch your video in HD, another is satisfied with SD-quality, and a mobile user can be served an optimized video, too. All of these options serve to minimize buffering and bandwidth use while providing the best quality video to a given user. The Zencoder plugin makes this process easy by providing a simple interface to create the profiles necessary for the different types of user, and -- with one click -- letting you submit a video to Zencoder, which then returns transcoded video ready to use.
+The Zencoder service makes it easy to transcode video to create video in the optimum format for a given user. That is, one use may prefer to watch your video in HD, another is satisfied with SD-quality, and a mobile user can be served an optimized video, too. All of these options serve to minimize buffering and bandwidth use while providing the best quality video to a given user.
 
 ![Overview](https://github.com/endevver/mt-plugin-zencoder/blob/master/plugins/Zencoder/static/documentation/overview.png?raw=true)
 
-Transcoded files from Zencoder and converted into Assets within Movable Type, ready to be used just like any other asset.
+The Zencoder plugin provides an interface to create "profiles" with the parameters for Zencoder to create the video in the formats required. After uploading an asset or submitting an asset to Zencoder (the "original video" in the above diagram) these profiles are used to instruct Zencoder about how to create the transcoded files.
+
+![Output Settings Profiles](https://github.com/endevver/mt-plugin-zencoder/blob/master/plugins/Zencoder/static/documentation/profiles-listing.png?raw=true)
+
+Transcoded files from Zencoder are converted into Assets within Movable Type, ready to be used just like any other asset. To make publishing multiple formats easy, refer to the Templating & Workflow section below.
 
 
 # Prerequisites
