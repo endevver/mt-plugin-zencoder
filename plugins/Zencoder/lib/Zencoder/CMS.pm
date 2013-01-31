@@ -17,25 +17,35 @@ sub init_app {
 
     # Check if the Zencoder Email Notification template has already been
     # installed. If not, create it.
-    return if MT->model('template')->exist({
-        type       => 'email',
-        identifier => 'zencoder_notify',
-    });
-
-    my $text = <<EMAIL;
+    if (
+        !MT->model('template')->exist({
+            type       => 'email',
+            identifier => 'zencoder_notify',
+        })
+    ) {
+        my $text = <<EMAIL;
 Zencoder has finished processing the asset "<mt:AssetLabel>" in the blog <mt:BlogName>. Child assets have been created created and are ready to use wherever you like!
 
 View the parent asset and all of the child assets:
     <mt:CGIPath><mt:AdminScript>?__mode=view&_type=asset&blog_id=<mt:BlogID>&id=<mt:AssetID>
 EMAIL
 
-    my $tmpl = MT->model('template')->new();
-    $tmpl->type('email');
-    $tmpl->identifier('zencoder_notify');
-    $tmpl->name('Zencoder Email Notification');
-    $tmpl->blog_id('0');
-    $tmpl->text( $text );
-    $tmpl->save or die $tmpl->errstr;
+        my $tmpl = MT->model('template')->new();
+        $tmpl->type('email');
+        $tmpl->identifier('zencoder_notify');
+        $tmpl->name('Zencoder Email Notification');
+        $tmpl->blog_id('0');
+        $tmpl->text( $text );
+        $tmpl->save or die $tmpl->errstr;
+    }
+
+    # Only install the Zencoder default profiles once, so just check if *any*
+    # profiles exist.
+    if ( !MT->model('zencoder_profile')->exist() ) {
+        require Zencoder::Profile;
+        Zencoder::Profile::install_default_profiles();
+    }
+    
 }
 
 # The listing screen for the Zencoder Output Settings that have been created,
@@ -55,13 +65,6 @@ sub profile_list {
         # Set the $blog_id variable so that it can be used in the terms, below.
         $blog_id = $app->blog->id;
         $param->{blog_id} = $blog_id;
-    }
-
-    # Only install the Zencoder default profiles once, on the first visit to the
-    # listing screen, so just check if *any* profiles exist.
-    if ( !MT->model('zencoder_profile')->exist() ) {
-        require Zencoder::Profile;
-        Zencoder::Profile::install_default_profiles();
     }
 
     my $code = sub {
