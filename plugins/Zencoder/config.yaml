@@ -3,7 +3,7 @@ id: Zencoder
 key: Zencoder
 description: 'An interface to the <a href="https://zencoder.com/">Zencoder</a> service from Brightcove.'
 version: 1.0.0
-author_name: 'Endevver'
+author_name: 'Dan Wolfgang, Endevver'
 author_link: http://endevver.com
 plugin_link: https://github.com/endevver/mt-plugin-zencoder/
 schema_version: 3
