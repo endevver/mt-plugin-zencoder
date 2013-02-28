@@ -129,7 +129,7 @@ sub _process_output {
     # some details updated.
     my $asset = $parent_asset->clone({
         except => {           # Don't clone certain existing values
-            id => 1,          # ...so the ID will be new/unique
+            id          => 1, # ...so the ID will be new/unique
             created_by  => 1, # ...so the creator will be "System"
             created_on  => 1, # ...so the created time will be "now"
             modified_by => 1,
@@ -367,6 +367,10 @@ sub _move_asset_file {
             $filename . '-' . ++$counter . $ext
         );
     }
+
+    # Collect the final filename with counter.
+    $filename .= '-' . $counter
+        if $counter;
 
     # Finally, the file is prepped and we've got a unique file name for this
     # asset. Move it!
