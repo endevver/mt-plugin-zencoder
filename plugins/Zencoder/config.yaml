@@ -151,4 +151,5 @@ callbacks:
     MT::App::CMS::template_param.edit_entry:  Zencoder::CMS::edit_entry_msg
     MT::App::CMS::cms_pre_save.entry:         Zencoder::CMS::pre_save_callback
     MT::App::CMS::api_pre_save.entry:         Zencoder::CMS::pre_save_callback
+    build_file_filter:                        Zencoder::Plugin::build_file_filter
 
