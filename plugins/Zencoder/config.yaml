@@ -78,7 +78,10 @@ listing_screens:
         primary: label
         default_sort_key: label
     zencoder_job:
-        primary: job_id
+        primary:
+            - parent_asset
+            - profile_label
+            - message
         default_sort_key: created_on
 
 list_properties:

@@ -41,7 +41,7 @@ sub list_properties {
             auto    => 1,
             label   => 'ID',
             order   => 100,
-            display => 'optional',
+            display => 'none',
         },
         job_id => {
             base    => '__virtual.integer',
@@ -50,11 +50,18 @@ sub list_properties {
             order   => 200,
             display => 'default',
         },
+        output_id => {
+            base    => '__virtual.integer',
+            col     => 'output_id',
+            label   => 'Output ID',
+            order   => 300,
+            display => 'default',
+        },
         parent_asset => {
             base    => '__virtual.string',
             col     => 'parent_asset_id',
             label   => 'Parent Asset',
-            order   => 300,
+            order   => 400,
             display => 'default',
             html    => sub {
                 my $prop = shift;
@@ -69,13 +76,6 @@ sub list_properties {
                 return $out;
             },
         },
-        output_id => {
-            base    => '__virtual.integer',
-            col     => 'output_id',
-            label   => 'Zencoder Output ID',
-            order   => 400,
-            display => 'default',
-        },
         profile_label => {
             base    => '__virtual.string',
             col     => 'profile_label',
@@ -88,7 +88,7 @@ sub list_properties {
             col     => 'message',
             label   => 'Error Message',
             order   => 600,
-            display => 'default',
+            display => 'optional',
         },
         created_on => {
             base    => '__virtual.created_on',

@@ -64,7 +64,7 @@ sub list_properties {
             auto    => 1,
             label   => 'ID',
             order   => 100,
-            display => 'optional',
+            display => 'none',
         },
         label => {
             base    => '__virtual.string',
