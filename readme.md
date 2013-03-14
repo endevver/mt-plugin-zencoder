@@ -47,13 +47,20 @@ Zencoder and click Settings to find the configuration options.
 
 Enter your Zencoder API key in the API Key field.
 
-Zencoder places output files in an FTP location you designate. Configure the
-username, password, and path fields with the appropriate values.
+Choose a Connection type: Zencoder's S3 bucket or FTP. Zencoder's S3 bucket is
+secure and uses private URLs, and requires no setup so is a great choice. FTP
+requires configuration but gives you complete control over the entire life of a
+transcoded file.
 
-Note that there are two path fields: FTP Destination Path and Server
-Destination Path. Both of these should contain absolute paths to the location
-Zencoder should place your transcoded files. The FTP user may have had a
-different root or home directory configured.
+If you choose the FTP connection, set some options:
+
+* Zencoder places output files in an FTP location you designate. Configure the
+  username, password, and path fields with the appropriate values.
+
+* Note that there are two path fields: FTP Destination Path and Server
+  Destination Path. Both of these should contain absolute paths to the location
+  Zencoder should place your transcoded files. The FTP user may have had a
+  different root or home directory configured.
 
 After Zencoder has completed processing a job and Movable Type has turned the
 new files from Zencoder into Assets, there is an opportunity to notify the user
