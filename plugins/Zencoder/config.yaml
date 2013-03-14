@@ -11,6 +11,9 @@ schema_version: 3
 settings:
     api_key:
         scope: system
+    connection:
+        scope: system
+        default: zencoder-s3
     ftp_server:
         scope: system
     ftp_user:

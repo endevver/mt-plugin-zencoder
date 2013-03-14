@@ -10,8 +10,43 @@
         value="<mt:Var name="api_key" escape="html">" />
 </mtapp:setting>
 
+<mtapp:setting
+    id="connection"
+    label="<__trans phrase="Connection">"
+    hint="<__trans phrase="When Zencoder has completed a job and the completed file is ready for use, it needs to be put somewhere that Movable Type can access. Select the connection method you want to use. Zencoder&rsquo;s S3 bucket is secure and simple, so typically a good choice.">"
+    show_hint="1">
+    <input type="radio"
+        name="connection"
+        id="connection-zencoder-s3"
+        value="zencoder-s3"
+        <mt:If name="connection" eq="zencoder-s3">checked</mt:If>
+        onclick="selectConnection('zencoder-s3');" />
+    <label for="connection-zencoder-s3">
+        Zencoder's S3 bucket
+    </label><br />
+
+    <input type="radio"
+        name="connection"
+        id="connection-ftp"
+        value="ftp"
+        <mt:If name="connection" eq="ftp">selected</mt:If>
+        onclick="selectConnection('ftp');" />
+    <label for="connection-ftp">
+        FTP (configuration required)
+    </label>
+</mtapp:setting>
+
+
+<div id="connection-fields-zencoder-s3">
+    <mt:Ignore>
+        This is just a placeholder for the Zencoder S3 connection link. There's
+        nothing to configure, but we need a div so the JS that turns on/off the
+        options doesn't break.
+    </mt:Ignore>
+</div>
+
 <mtapp:SettingGroup
-    id="connection">
+    id="connection-fields-ftp">
     <h3>FTP Connection Configuration</h3>
     <p>Zencoder transfers the output files to a destination on this server with
     FTP. This destination doesn&rsquo;t need to be web-accessible; files will be
@@ -108,4 +143,19 @@
             <mt:If name="automatic_submit">checked</mt:If> />
     </mtapp:setting>
 </mtapp:SettingGroup>
+
+<script type="text/javascript">
+// Show and hide the correct connection based on what was chosen.
+function selectConnection(type) {
+    // Hide all
+    getByID('connection-fields-ftp').style.display = 'none';
+    getByID('connection-fields-zencoder-s3').style.display = 'none';
+
+    // Show the selected connection setup.
+    getByID('connection-fields-'+type).style.display = 'block';
+}
+
+// Show only the selected connection by default.
+selectConnection('<mt:Var name="connection">');
+</script>
 

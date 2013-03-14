@@ -7,8 +7,7 @@ use HTTP::Headers;
 use HTTP::Request;
 use LWP::UserAgent;
 use MT::Util qw( relative_date format_ts dirify caturl epoch2ts );
-
-use Data::Dumper;
+use Zencoder::Connection;
 
 sub init_app {
     my $plugin = shift;
@@ -340,25 +339,6 @@ sub _submit_to_zencoder {
         parent_asset_id => $asset->id,
     });
 
-    # Prep the FTP credentials to be used for the output URLs.
-    my $ftp_server = $plugin->get_config_value('ftp_server');
-    my $ftp_user   = $plugin->get_config_value('ftp_user');
-    my $ftp_pass   = $plugin->get_config_value('ftp_pass');
-    my $ftp_path   = $plugin->get_config_value('ftp_path');
-    my $ftp        = '';
-
-    if ( $ftp_server && $ftp_user && $ftp_pass && $ftp_path) {
-        # Compose a string to be used for the FTP connection. The $ftp_path is
-        # modified for each output, below, to ensure relative uniqueness for
-        # each output.
-        $ftp = "ftp://$ftp_user:$ftp_pass@" . $ftp_server;
-    }
-    else {
-        die $app->error("Zencoder configuration was not completed: review "
-            . "the FTP Connection Configuration fields in Zencoder's plugin "
-            . "Settings before resubmitting.");
-    }
-
     $json->{api_key} = $plugin->get_config_value('api_key')
         or die ('The Zencoder API key has not been configured.');
 
@@ -372,6 +352,9 @@ sub _submit_to_zencoder {
         or die $app->error('No enabled Zencoder Output Setting Profiles '
             . 'could be found. Check that the profiles you want to use are '
             . 'enabled before resubmitting.');
+
+    # Grab the details to build a connection to submit a `url` to Zencoder.
+    my $connection = Zencoder::Connection::create_connection();
 
     my @outputs;
     foreach my $profile (@profiles) {
@@ -394,11 +377,14 @@ sub _submit_to_zencoder {
 
         # Thumbnails require a base_url that tells Zencoder where to place
         # files.
-        my $base_url = $ftp . File::Spec->catdir(
-            $ftp_path,
-            $asset->id,
-            dirify( $profile->label ),
-        );
+        my $base_url = '';
+        if ( $connection->{base} ) {
+            $base_url = $connection->{base} . File::Spec->catdir(
+                $connection->{path},
+                $asset->id,
+                dirify( $profile->label ),
+            );
+        }
 
         # Thumbnails are an array of hashes within each output hash. Include the
         # type of thumbnail(s) that have been enabled for this profile.
@@ -435,17 +421,21 @@ sub _submit_to_zencoder {
         $output->{thumbnails} = \@thumbnails
             if \@thumbnails;
 
-        # The output also needs to have a URL provided for where to save the
-        # file. This needs to include the FTP credentials, the absolute path,
-        # and a relatively unique filename. $ftp already contains the "base"
-        # that the user specified, so to keep things unique use a folder for
-        # this output based on the asset and dirified profile label.
-        $output->{url} = $ftp . File::Spec->catfile(
-            $ftp_path,
-            $asset->id,
-            dirify( $profile->label ),
-            $asset->file_name
-        );
+        # The output may need a URL for where to save the file, depending upon
+        # the connection selection. (If using Zencoder's S3 bucket, no URL
+        # needs to be supplied.) For an FTP connection, this needs to include
+        # the FTP credentials, the absolute path, and a relatively unique
+        # filename. $connection already contains the "base" that the user
+        # specified, so to keep things unique use a folder for this output
+        # based on the asset and dirified profile label.
+        if ( $connection->{base} ) {
+            $output->{url} = $connection->{base} . File::Spec->catfile(
+                $connection->{path},
+                $asset->id,
+                dirify( $profile->label ),
+                $asset->file_name
+            );
+        }
 
         # We want to be notified when this output is complete. Zencoder's
         # notification system will hit notification.cgi with a JSON object
