@@ -44,20 +44,10 @@ sub receive_notification {
     # use Data::Dumper;
     # MT->log('Zencoder Notification JSON: '.Dumper($notification));
 
-    # The following are keys for the meta that is returned with the output
-    # detail. Use this when processing the output, to save these values in case
-    # they could be published later.
-    my @keys = qw{
-        height width audio_bitrate_in_kbps audio_codec audio_sample_rate
-        channels duration_in_ms format frame_rate video_bitrate_in_kbps
-        video_codec
-    };
-
     # The notification JSON object contains details of the job, input, and
     # output. Process the output.
     _process_output({
-        output      => $notification->{output},
-        object_keys => @keys,
+        output => $notification->{output},
     });
 
     # Finally, the output in this job has been processed. There should be some
@@ -69,7 +59,15 @@ sub receive_notification {
 sub _process_output {
     my ($arg_ref) = @_;
     my $output    = $arg_ref->{output};
-    my @keys      = $arg_ref->{object_keys};
+
+    # The following are keys for the meta that is returned with the output
+    # detail. Use this when processing the output, to save these values in case
+    # they could be published later.
+    my @keys = qw{
+        height width audio_bitrate_in_kbps audio_codec audio_sample_rate
+        channels duration_in_ms format frame_rate video_bitrate_in_kbps
+        video_codec
+    };
 
     # Find the job in the Zencoder Jobs table, which is important primarly
     # because it has the asset parent ID necessary to make the parent-child
@@ -100,7 +98,6 @@ sub _process_output {
         return 0;
     }
 
-
     my $blog = MT->model('blog')->load( $job->blog_id )
         or return MT->log({
             level   => MT->model('log')->ERROR(),
@@ -114,7 +111,7 @@ sub _process_output {
     # The new output has already been saved onto the server. Turn it into
     # an asset in MT. Use the parent asset to set a parent-child
     # relationship, and to set the metadata of the new asset.
-    my $parent_asset = MT->model('asset')->load($job->parent_asset_id)
+    my $parent_asset = MT->model('asset')->load( $job->parent_asset_id )
         or return MT->log({
             level   => MT->model('log')->ERROR(),
             blog    => $blog->id,

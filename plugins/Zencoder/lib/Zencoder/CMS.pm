@@ -470,7 +470,9 @@ sub _submit_to_zencoder {
     # Finally, save all of these outputs to the JSON object.
     $json->{outputs} = \@outputs;
 
-    # MT->log("JSON, ready to submit: ".Dumper($json));
+    # Save the complete JSON to the Activity Log for debugging.
+    # use Data::Dumper;
+    # MT->log("Zencoder JSON, ready to submit: " . Dumper($json));
 
     # Build the request to be submitted to Zencoder
     my $zencoder_uri = 'https://app.zencoder.com/api/v2/jobs';
